@@ -1,37 +1,52 @@
-CREATE DATABASE bamazon_db;
+Drop Database if Exists bamazon_db;
 
-USE bamazon_db;
+Create Database bamazon_db;
 
-CREATE TABLE products (
-  PRIMARY KEY (id),
-  id INTEGER(11) AUTO_INCREMENT NOT NULL,
-  -- unique id for each product --
-  item_id INTEGER(30) NOT NULL,
-  -- name of product--
+Use bamazon_db;
+
+Create Table product (
+  -- Makes a string column called "item_id" 
+  item_id INTEGER(10) NOT NULL AUTO_INCREMENT,
+  -- Makes a string column called "product_name" which cannot contain null --
   product_name VARCHAR(30) NOT NULL,
-  -- name of department --
-  department_name VARCHAR(30) NOT NULL,
-  -- price for product --
-  price INTEGER(200) NOT NULL,
-  -- how many items are in stock
-  stock_quantity INTEGER(200) NOT NULL
+  -- Makes a sting column called "department name" which cannot contain null --
+ department_name  VARCHAR(30),
+  -- Makes an numeric column called "price" --
+  price DECIMAL(10),
+  -- Makes an numeric column called "pet_age" --
+  stock_quanity INTEGER(25),
+  PRIMARY KEY (item_id)
 );
 
-drop table products;
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Hp Laptop", "Electronics", 500, 6);
 
-INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("bicycle", "sporting goods", 200, 10),
-        ("tv", "electronics", 900, 15),
-        ("playstation 4", "electronics", 400, 20),
-        ("football", "sporting goods", 20, 10),
-        ("xbox One", "electronics", 400, 20),
-        ("leather jacket", "clothing", 350, 5),
-        ("levi's jeans", "clothing", 65, 12),
-        ("watch", "jewelry", 375, 8),
-        ("diamond Ring", "jewelry", 750, 3),
-        ("dr. marten boots", "clothing", 300, 8);
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Iphone 8 plus", "Electronics", 800, 10);
 
-SELECT * FROM products;
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Microwave", "Home Appliances", 150, 10);
 
-select item_id, product_name, price from products;
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Levi's Jeans", "Clothes", 50, 22);
 
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Sunglasses", "Appearance", 5, 3);
+
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Headphones", "Electronics", 95, 11);
+
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("T Bone Steak", "Food", 8, 9);
+
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Fan", "Home Appliances", 25, 12);
+
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Windex", "Home Goods", 4, 14);
+
+INSERT INTO product (product_name, department_name, price, stock_quanity)
+VALUES ("Jean Jacket", "Clothing", 35, 7);
+
+-- Selects Frome Product's --
+SELECT * FROM product;

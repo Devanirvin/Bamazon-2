@@ -1,91 +1,28 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
-var productArray = [];
-
+//connection to my sql
 var connection = mysql.createConnection({
-    host: "localhost",
-    port:"3306",
-    user: "root",
-    password: "root",
-    database: "bamazon_db"
-  });
-connection.connect(function(err) {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
-  viewAll();
+	host: "localhost",
+	port: "3306",
+	user: "root",
+	password: "password",
+	database: "bamazon_db"
 });
-
-function products() {
-  console.log("Here are all of our products...\n");
-  connection.query("SELECT * FROM products", function(err, res) {
-    if (err){ throw err;
-    }
-    for(var i = 0; i < res.length; i++){
-    console.log("Product Number: " + res[i].item_id + "\n" + "Product Name: " + res[i].product_name + "\n" + "Price: " + res[i].price + "\n" + "Available Units: " + res[i].stock_quantity + "\n-----------");
-    }
-    questionOne();
-  });
+//connecting to the database through a query 
+connection.connect(function (err) {
+	if (err) throw err;
+	console.log("connected as id " + connection.threadId + "\n");
+});
+//function to display product table
+var products = function () {
+	connection.query("SELECT * FROM product", function (err, res) {
+		if (err) {
+			throw err;
+		}
+		console.log("Products Here...")
+		for (var i = 0; i < res.length; i++) {
+		}
+	});
 }
-   
- function questionOne(){
- 	inquirer.prompt(
-    	{
-    		type: "input",
-    		message: "What is the ID of the product they would like to buy?",
-    		name: "selection"
- 
-    	}
-    	
-    	).then(function(answers) {
-			
- 			connection.query("SELECT * FROM products WHERE item_id =?", [answers.selection], function(err, res) {
-		    if (err) throw err;
-		    console.log("Item details: ");
-		    console.log("Product name: " + res[0].product_name);
-		    console.log("Price: $" + res[0].price);
-		    console.log(res[0].stock_quantity + " left in stock.");
 
-		    questionTwo(res);
-    });
- });
- }
-
- function questionTwo(res){
- 	inquirer.prompt(
-    	{
-    		type: "input",
-    		message: "How many units would you like to buy?",
-    		name: "selection"
-            }
-    	    ).then(function(answers) {
-    		
-    		if(answers.selection < res[0].stock_quantity){
-    			console.log("This is yours, Enjoy!");
-    			var updatedStock = res[0].stock_quantity - answers.selection; 
-    			update(res, updatedStock);
-    		}
-    		else {
-    			console.log("We're all out. Sorry");
-                products();
-            }
-        });
-  }
-
-  function update(res, updatedStock) {
- 
-	connection.query(
-	    "UPDATE products SET ? WHERE ?",
-	    {
-	        stock_quantity: updatedStock
-	      },
-	      {
-	      	product_name: res[0].product_name
-	      },
-
-    function(err, res) {
-    
-    connection.destroy();
-	      }
-	  );
-}
